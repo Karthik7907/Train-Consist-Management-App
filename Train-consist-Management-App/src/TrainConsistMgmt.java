@@ -1,29 +1,19 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 class Bogie {
-    private String name;
-    private int capacity;
+    String name;
+    int capacity;
 
     public Bogie(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
     @Override
     public String toString() {
-        if (name.equals("AC Chair")) {
-            return name + " 56";
-        }
         return name + " -> " + capacity;
     }
 }
@@ -31,26 +21,32 @@ class Bogie {
 public class TrainConsistMgmt {
 
     public static void main(String[] args) {
-        System.out.println("UC7 Sort Bogies by Capacity (Comparator)\n");
+        System.out.println("UC9 Group Bogies by Type\n");
 
+        // Create list of bogies
         List<Bogie> bogies = new ArrayList<>();
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 56));
         bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("General", 90));
+        bogies.add(new Bogie("Sleeper", 70));
+        bogies.add(new Bogie("AC Chair", 60));
 
-        System.out.println("Before Sorting:");
+        // Display input bogies
+        System.out.println("All Bogies:");
         for (Bogie b : bogies) {
             System.out.println(b);
         }
 
-        bogies.sort(Comparator.comparingInt(Bogie::getCapacity));
+        // GROUP USING COLLECTORS.GROUPINGBY
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
 
-        System.out.println("\nAfter Sorting by Capacity:");
-        for (Bogie b : bogies) {
-            System.out.println(b);
+        // Display grouped structure
+        System.out.println("\nGrouped Bogies:");
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
         }
 
-        System.out.println("\nUC7 sorting completed...");
+        System.out.println("\nUC9 grouping completed...");
     }
 }
