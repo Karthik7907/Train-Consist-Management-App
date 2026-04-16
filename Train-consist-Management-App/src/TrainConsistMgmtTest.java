@@ -3,45 +3,33 @@ import org.junit.Test;
 
 public class TrainConsistMgmtTest {
 
-    @Test
-    public void testBinarySearch_BogieFound() {
-        String[] input = {"BG101","BG205","BG309","BG412","BG550"};
-        assertTrue(TrainConsistMgmt.binarySearchBogie(input, "BG309"));
-    }
-
-    @Test
-    public void testBinarySearch_BogieNotFound() {
-        String[] input = {"BG101","BG205","BG309","BG412","BG550"};
-        assertFalse(TrainConsistMgmt.binarySearchBogie(input, "BG999"));
-    }
-
-    @Test
-    public void testBinarySearch_FirstElementMatch() {
-        String[] input = {"BG101","BG205","BG309","BG412","BG550"};
-        assertTrue(TrainConsistMgmt.binarySearchBogie(input, "BG101"));
-    }
-
-    @Test
-    public void testBinarySearch_LastElementMatch() {
-        String[] input = {"BG101","BG205","BG309","BG412","BG550"};
-        assertTrue(TrainConsistMgmt.binarySearchBogie(input, "BG550"));
-    }
-
-    @Test
-    public void testBinarySearch_SingleElementArray() {
-        String[] input = {"BG101"};
-        assertTrue(TrainConsistMgmt.binarySearchBogie(input, "BG101"));
-    }
-
-    @Test
-    public void testBinarySearch_EmptyArray() {
+    @Test(expected = IllegalStateException.class)
+    public void testSearch_ThrowsExceptionWhenEmpty() {
         String[] input = {};
-        assertFalse(TrainConsistMgmt.binarySearchBogie(input, "BG101"));
+        TrainConsistMgmt.searchBogie(input, "BG101");
     }
 
     @Test
-    public void testBinarySearch_UnsortedInputHandled() {
-        String[] input = {"BG309","BG101","BG550","BG205","BG412"};
-        assertTrue(TrainConsistMgmt.binarySearchBogie(input, "BG205"));
+    public void testSearch_AllowsSearchWhenDataExists() {
+        String[] input = {"BG101","BG205"};
+        TrainConsistMgmt.searchBogie(input, "BG101"); // should not throw
+    }
+
+    @Test
+    public void testSearch_BogieFoundAfterValidation() {
+        String[] input = {"BG101","BG205","BG309"};
+        assertTrue(TrainConsistMgmt.searchBogie(input, "BG205"));
+    }
+
+    @Test
+    public void testSearch_BogieNotFoundAfterValidation() {
+        String[] input = {"BG101","BG205","BG309"};
+        assertFalse(TrainConsistMgmt.searchBogie(input, "BG999"));
+    }
+
+    @Test
+    public void testSearch_SingleElementValidCase() {
+        String[] input = {"BG101"};
+        assertTrue(TrainConsistMgmt.searchBogie(input, "BG101"));
     }
 }
